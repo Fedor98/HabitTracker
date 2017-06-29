@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        // Perform this SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
         String[] projection = {
                 HabitEntry._ID,
                 HabitEntry.COLUMN_HABIT_NAME,
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 HabitEntry.COLUMN_HABIT_GROUP
         };
 
+        // Perform a query on the pets table
         Cursor cursor = db.query(
                 HabitEntry.TABLE_NAME,
                 projection,
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         values.put(HabitEntry.COLUMN_HABIT_FREQUENCY, HabitEntry.FREQUENCY_DAILY);
         values.put(HabitEntry.COLUMN_HABIT_GROUP, HabitEntry.GROUP_NO);
 
-        // Insert a new row for Toto in the database, returning the ID of that new row.
-        // The first argument for db.insert() is the pets table name.
+        // Insert a new row for Taking my medicine in the database, returning the ID of that new row.
+        // The first argument for db.insert() is the habits table name.
         // The second argument provides the name of a column in which the framework
         // can insert NULL in the event that the ContentValues is empty (if
         // this is set to "null", then the framework will not insert a row when
