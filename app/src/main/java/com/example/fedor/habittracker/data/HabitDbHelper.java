@@ -55,7 +55,7 @@ public class HabitDbHelper extends SQLiteOpenHelper {
                 + HabitEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + HabitEntry.COLUMN_HABIT_NAME + " TEXT NOT NULL, "
                 + HabitEntry.COLUMN_HABIT_TYPE + " TEXT, "
-                + HabitEntry.COLUMN_HABIT_FREQUENCY + " INTEGER NOT NULL DEFAULT 1 "
+                + HabitEntry.COLUMN_HABIT_FREQUENCY + " INTEGER NOT NULL DEFAULT 1, "
                 + HabitEntry.COLUMN_HABIT_GROUP + " INTEGER NOT NULL DEFAULT 0);";
 
         // Execute the SQL statement

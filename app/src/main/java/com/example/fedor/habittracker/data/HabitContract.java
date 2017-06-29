@@ -18,7 +18,7 @@ public class HabitContract {
         public static final String COLUMN_HABIT_NAME = "name";
         public static final String COLUMN_HABIT_TYPE = "type";
         public static final String COLUMN_HABIT_FREQUENCY = "frequency";
-        public static final String COLUMN_HABIT_GROUP = "group activity";
+        public static final String COLUMN_HABIT_GROUP = "group_activity";
 
         public static final int FREQUENCY_DAILY = 0;
         public static final int FREQUENCY_WEEKLY = 1;

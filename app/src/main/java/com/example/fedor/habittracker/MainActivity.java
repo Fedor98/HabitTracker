@@ -18,9 +18,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDbHelper = new HabitDbHelper(this);
     }
 
-    private void displayDatabaseInfo() {
+    private Cursor readStoreCursor() {
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -34,40 +36,44 @@ public class MainActivity extends AppCompatActivity {
                 HabitEntry.COLUMN_HABIT_GROUP
         };
 
-        // Perform a query on the pets table
+        // Perform a query on the habits table
         Cursor cursor = db.query(
-                HabitEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null);
+                HabitEntry.TABLE_NAME,  // The table to query
+                projection,             // The columns to return
+                null,                   // The columns for the WHERE clause
+                null,                   // The values for the WHERE clause
+                null,                   // Don't group the rows
+                null,                   // Don't filter by row groups
+                null);                    // The sort order
 
-        try {
-            // Figure out the index of each column
-            int idColumnIndex = cursor.getColumnIndex(HabitEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
-            int typeColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_TYPE);
-            int frequencyColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_FREQUENCY);
-            int groupColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_GROUP);
-
-            // Iterate through all the returned rows in the cursor
-            while (cursor.moveToNext()) {
-                // Use that index to extract the String or Int value of the word
-                // at the current row the cursor is on.
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                String currentType = cursor.getString(typeColumnIndex);
-                int currentFrequency = cursor.getInt(frequencyColumnIndex);
-                int currentGroup = cursor.getInt(groupColumnIndex);
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+        return cursor;
     }
+
+        private void fillCursor(Cursor cursor) {
+            try {
+                // Figure out the index of each column
+                int idColumnIndex = cursor.getColumnIndex(HabitEntry._ID);
+                int nameColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
+                int typeColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_TYPE);
+                int frequencyColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_FREQUENCY);
+                int groupColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_GROUP);
+
+                // Iterate through all the returned rows in the cursor
+                while (cursor.moveToNext()) {
+                    // Use that index to extract the String or Int value of the word
+                    // at the current row the cursor is on.
+                    int currentID = cursor.getInt(idColumnIndex);
+                    String currentName = cursor.getString(nameColumnIndex);
+                    String currentType = cursor.getString(typeColumnIndex);
+                    int currentFrequency = cursor.getInt(frequencyColumnIndex);
+                    int currentGroup = cursor.getInt(groupColumnIndex);
+                }
+            } finally {
+                // Always close the cursor when you're done reading from it. This releases all its
+                // resources and makes it invalid.
+                cursor.close();
+            }
+        }
 
     /**
      * Helper method to insert hardcoded habit data into the database. For debugging purposes only.
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
-        // and Toto's pet attributes are the values.
+        // and Taking my medicine habit attributes are the values.
         ContentValues values = new ContentValues();
         values.put(HabitEntry.COLUMN_HABIT_NAME, "Taking my medicine");
         values.put(HabitEntry.COLUMN_HABIT_TYPE, "medical");
